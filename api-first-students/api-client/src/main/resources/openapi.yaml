@@ -1,0 +1,153 @@
+openapi: 3.0.0
+info:
+  title: My Backend API
+  description: This API exposes endpoints.
+  termsOfService: https://www.ayuda.com/terms
+  contact:
+    name: Joaquin
+    url: https://www.twitch.com
+    email: joaquin@gmail.com
+  license:
+    name: MIT License
+    url: https://choosealicense.com/licenses/mit/
+  version: "1.0"
+externalDocs:
+  description: Repositorio y Documentación del Proyecto y API
+  url: https://github.com/joaquincg200
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /student/create:
+    post:
+      tags:
+      - student-controller
+      operationId: createStudent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateStudentRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/StudentDTO"
+  /student/update/{id}:
+    patch:
+      tags:
+      - student-controller
+      operationId: updateStudent
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateStudentRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/StudentDTO"
+  /students:
+    get:
+      tags:
+      - student-controller
+      operationId: getAll
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StudentDTO"
+  /students/finished/{value}:
+    get:
+      tags:
+      - student-controller
+      operationId: getAllFinished
+      parameters:
+      - name: value
+        in: path
+        required: true
+        schema:
+          type: boolean
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StudentDTO"
+  /student/delete/{id}:
+    delete:
+      tags:
+      - student-controller
+      operationId: deleteStudent
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/StudentDTO"
+components:
+  schemas:
+    CreateStudentRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        mail:
+          type: string
+        date_born:
+          type: string
+          format: date
+        finished:
+          type: boolean
+    StudentDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          description: Nombre del estudiante
+          example: Pepe Reina
+        mail:
+          type: string
+          description: Email del estudiante
+          example: pepereina@gmail.com
+        date_born:
+          type: string
+          format: date
+          description: Fecha de nacimiento del alumno
+          example: "2000-05,05"
+        finished:
+          type: boolean
+          description: Si el estudiante ha terminado los estudios
+          example: true
